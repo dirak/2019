@@ -1,0 +1,18 @@
+input[type="number"] {
+	width: 4em;
+}
+label {
+	display: inline-block;
+	width: 110px;
+	text-align:right;
+}
+
+.toolbar {
+	float: left;
+	width: 30%;
+}
+
+#canvas-app {
+	float: left;
+	width: 70%;
+}
