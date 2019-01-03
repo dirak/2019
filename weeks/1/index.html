@@ -33,7 +33,15 @@
 			<input type = "number" name="height" id="yoffset-input" value="0"> 
 		</div>
 		<div>
-			<button id="generate">generate</button>
+			<button id="generate">Generate</button>
+		</div>
+		<pre>
+			Choose a spritesheet. Adjust the numbers until the boxes line up with the individual sprites, using right-click to remove any empty sprites. Left click on a box to set specific details. Once you are satisfied, press Generate to get the atlas in JSON format.
+		</pre>
+		<div id="sprite-menu">
+			<h3>Current Selection:</h3>
+			<label for="sprite-name">Sprite Name</label>
+			<input type="text" name="sprite-name" id="sprite-name">
 		</div>
 	</div>
 	<div id="canvas-app">

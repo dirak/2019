@@ -14,6 +14,8 @@ var game = new Phaser.Game({
 	backgroundColor: '#CCCCCC',
 	scene: {
 		preload: function() {
+			console.log(this);
+			this.input.mouse.disableContextMenu();
 			this.generateBox = function(width, height) {
 				this.textures.remove('box');
 				let tmp = this.add.graphics();
@@ -32,9 +34,28 @@ var game = new Phaser.Game({
 				for(let i = 0; i < columns; i++) {
 					for(let j = 0; j < rows; j++) {
 						let box = this.add.sprite(x_offset + i*(tile_width+x_padding), y_offset + j*(tile_height+y_padding), 'box').setOrigin(0);
+						box.sprite_index = `${i}_${j}`;
+						box.sprite_name = `${i}_${j}`;
 						box.setInteractive();
-						box.on('pointerdown', () => {
-							this.boxes.remove(box, true, true);
+						box.on('pointerdown', (pointer) => {
+							switch (pointer.buttons) {
+								case 1:
+									let menu = document.getElementById('sprite-menu');
+									let menu_clone = menu.cloneNode(true);
+									menu.parentNode.replaceChild(menu_clone, menu);
+									menu_clone.style.display = 'block';
+									document.getElementById('sprite-name').value = box.sprite_name;
+									document.getElementById('sprite-name').addEventListener('change', () => {
+										box.sprite_name = document.getElementById('sprite-name').value;
+									});
+									break;
+								case 2:
+									this.boxes.remove(box, true, true);
+									break;
+								default:
+									break;
+							}
+							
 						});
 						this.boxes.add(box);
 					}
@@ -44,9 +65,9 @@ var game = new Phaser.Game({
 			this.generateJSON = () => {
 				return {
 					frames: 
-						this.boxes.getChildren().map((box, index) => {
+						this.boxes.getChildren().map(box => {
 							return {
-								filename: `${index}`,
+								filename: `${box.sprite_name}`,
 								frame: {
 									x: box.x,
 									y: box.y,

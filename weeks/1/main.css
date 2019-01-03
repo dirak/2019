@@ -14,5 +14,14 @@ label {
 
 #canvas-app {
 	float: left;
-	width: 70%;
+	width: 68%;
 }
+
+#sprite-menu {
+	display: none;
+}
+
+pre {
+	white-space: pre-line;
+	width: 60%;
+ }
