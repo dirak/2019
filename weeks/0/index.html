@@ -7,7 +7,33 @@
 </head>
 <body>
 	<input name="image" type = "file" accept = "image/*" id="image_upload"/>
-	<img id="test">
+	<div>
+		<label for="width-input">Tile Width</label>
+		<input type = "number" name="width" id="width-input" value="32"> 
+	</div>
+	<div>
+		<label for="height-input">Tile Height</label>
+		<input type = "text" name="height" id="height-input" value="32"> 
+	</div>
+	<div>
+		<label for="xpadding-input">X-Axis Padding</label>
+		<input type = "text" name="height" id="xpadding-input" value="0"> 
+	</div>
+	<div>
+		<label for="ypadding-input">Y-Axis Padding</label>
+		<input type = "text" name="height" id="ypadding-input" value="0"> 
+	</div>
+	<div>
+		<label for="xoffset-input">X-Axis Offset</label>
+		<input type = "text" name="height" id="xoffset-input" value="0"> 
+	</div>
+	<div>
+		<label for="yoffset-input">Y-Axis Offset</label>
+		<input type = "text" name="height" id="yoffset-input" value="0"> 
+	</div>
+	<div>
+		<button id="generate">generate</button>
+	</div>
 	<div id="canvas-app">
 
 	</div>
