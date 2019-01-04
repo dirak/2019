@@ -1,3 +1,4 @@
+var menu_offset = 300;
 var tile_width = 32;
 var tile_height = 32;
 var x_padding = 0;
@@ -9,7 +10,7 @@ var json = {};
 
 var game = new Phaser.Game({
 	...CONFIG,
-	width: window.innerWidth-200,
+	width: window.innerWidth,
 	height: window.innerHeight-100,
 	backgroundColor: '#CCCCCC',
 	scene: {
@@ -28,12 +29,12 @@ var game = new Phaser.Game({
 			this.drawBoxes = () => {
 				if(this.spritesheet) this.spritesheet.destroy(true);
 				this.boxes.clear(true, true);
-				this.spritesheet = this.add.sprite(0, 0, 'test').setOrigin(0);
+				this.spritesheet = this.add.sprite(menu_offset, 0, 'spritesheet').setOrigin(0);
 				let columns = Math.floor(this.spritesheet.displayWidth / tile_width);
 				let rows = Math.floor(this.spritesheet.displayHeight / tile_height);
 				for(let i = 0; i < columns; i++) {
 					for(let j = 0; j < rows; j++) {
-						let box = this.add.sprite(x_offset + i*(tile_width+x_padding), y_offset + j*(tile_height+y_padding), 'box').setOrigin(0);
+						let box = this.add.sprite(menu_offset + x_offset + i*(tile_width+x_padding), y_offset + j*(tile_height+y_padding), 'box').setOrigin(0);
 						box.sprite_index = `${i}_${j}`;
 						box.sprite_name = `${i}_${j}`;
 						box.setInteractive();
@@ -48,6 +49,14 @@ var game = new Phaser.Game({
 									document.getElementById('sprite-name').addEventListener('change', () => {
 										box.sprite_name = document.getElementById('sprite-name').value;
 									});
+									this.selection = this.add.image(0, 200, 'selection').setOrigin(0);
+									this.selection.frame.height = tile_height;
+									this.selection.frame.width = tile_width;
+									this.selection.frame.cutWidth = tile_width;
+									this.selection.frame.cutHeight = tile_height;
+									this.selection.frame.cutX = box.x - menu_offset;
+									this.selection.frame.cutY = box.y;
+									this.selection.frame.updateUVs();
 									break;
 								case 2:
 									this.boxes.remove(box, true, true);
@@ -95,8 +104,10 @@ var game = new Phaser.Game({
 			document.getElementById('image_upload').addEventListener('change', () => {
 				let files = document.getElementById('image_upload').files;
 				getBase64(files[0]).then(data => {
-					this.textures.remove('test');
-					this.textures.addBase64('test', data);
+          this.textures.remove('spritesheet');
+          this.textures.remove('selection');
+          this.textures.addBase64('spritesheet', data);
+          this.textures.addBase64('selection', data);
 				});
 			});
 			document.getElementById('width-input').addEventListener('change', (event) => {

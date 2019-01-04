@@ -1,20 +1,23 @@
 input[type="number"] {
 	width: 4em;
 }
+
+input[type="text"] {
+	width: 10em;
+}
+
 label {
 	display: inline-block;
 	width: 110px;
 	text-align:right;
 }
 
-.toolbar {
-	float: left;
-	width: 30%;
+#canvas-app {
+	position:absolute;
 }
 
-#canvas-app {
-	float: left;
-	width: 68%;
+#toolbar {
+	position:fixed;
 }
 
 #sprite-menu {
