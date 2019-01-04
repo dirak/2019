@@ -12,8 +12,12 @@ label {
 	text-align:right;
 }
 
-#canvas-app {
-	position:absolute;
+canvas {
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  top:0;
 }
 
 #toolbar {
@@ -23,8 +27,3 @@ label {
 #sprite-menu {
 	display: none;
 }
-
-pre {
-	white-space: pre-line;
-	width: 60%;
- }

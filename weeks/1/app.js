@@ -11,7 +11,7 @@ var json = {};
 var game = new Phaser.Game({
 	...CONFIG,
 	width: window.innerWidth,
-	height: window.innerHeight-100,
+	height: window.innerHeight,
 	backgroundColor: '#CCCCCC',
 	scene: {
 		preload: function() {
