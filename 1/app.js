@@ -59,9 +59,9 @@ var game = new Phaser.Game({
 									if(this.selection) this.selection.destroy();
 									if(this.selection_box) this.selection_box.destroy();
 									this.selection_box = this.add.sprite(box.x, box.y, 'box_selection').setOrigin(0);
-									this.selection = this.add.image(0, 200, 'selection').setOrigin(0);
-									this.selection.frame.height = tile_height;
-									this.selection.frame.width = tile_width;
+									this.selection = this.add.image(0, 200, 'selection').setOrigin(0).setScale(2);
+									this.selection.frame.height = tile_height*2;
+									this.selection.frame.width = tile_width*2;
 									this.selection.frame.cutWidth = tile_width;
 									this.selection.frame.cutHeight = tile_height;
 									this.selection.frame.cutX = box.x - menu_offset;
