@@ -20,9 +20,16 @@ var game = new Phaser.Game({
 			this.generateBox = function(width, height) {
 				this.textures.remove('box');
 				let tmp = this.add.graphics();
-				tmp.lineStyle(1,0xfc0fc0, 1.0);
+				tmp.lineStyle(1, 0xfc0fc0, 1.0);
 				tmp.strokeRect(0, 0, width, height);
 				tmp.generateTexture('box', width, height);
+				tmp.destroy();
+
+				this.textures.remove('box_selection');
+				tmp = this.add.graphics();
+				tmp.lineStyle(4 ,0x000000, 1.0);
+				tmp.strokeRect(0, 0, width, height);
+				tmp.generateTexture('box_selection', width, height);
 				tmp.destroy();
 			}
 
@@ -49,6 +56,9 @@ var game = new Phaser.Game({
 									document.getElementById('sprite-name').addEventListener('change', () => {
 										box.sprite_name = document.getElementById('sprite-name').value;
 									});
+									if(this.selection) this.selection.destroy();
+									if(this.selection_box) this.selection_box.destroy();
+									this.selection_box = this.add.sprite(box.x, box.y, 'box_selection').setOrigin(0);
 									this.selection = this.add.image(0, 200, 'selection').setOrigin(0);
 									this.selection.frame.height = tile_height;
 									this.selection.frame.width = tile_width;
