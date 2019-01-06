@@ -5,6 +5,8 @@ const DEBUG = 1;
 
 let snap_to_grid = (x, y) => [Math.floor(x/tile_width)*tile_width, Math.floor(y/tile_height)*tile_height];
 
+let test_path = new Phaser.Curves.Path();
+
 let possible_directions = {
 	'up': ['up', 'cw_right', 'cc_left'],
 	'right': ['right', 'cw_down', 'cc_up'],
@@ -34,7 +36,6 @@ let possible_directions = {
 };
 
 let guide_position = (direction, x, y) => {
-	console.log(direction);
 	switch(direction) {
 		case 'cc_up':
 		case 'cw_up':
@@ -67,6 +68,79 @@ let guide_position = (direction, x, y) => {
 	}
 }
 
+let get_curve = (direction, x, y) => {
+	switch(direction) {
+		case 'up':
+			return new Phaser.Curves.Line(
+				new Phaser.Math.Vector2(x + tile_width/2, y + tile_height),
+				new Phaser.Math.Vector2(x + tile_width/2, y)
+			);
+		case 'down':
+			return new Phaser.Curves.Line(
+				new Phaser.Math.Vector2(x + tile_width/2, y),
+				new Phaser.Math.Vector2(x + tile_width/2, y + tile_height)
+			);
+		case 'right':
+			return new Phaser.Curves.Line(
+				new Phaser.Math.Vector2(x, y + tile_height/2),
+				new Phaser.Math.Vector2(x + tile_width, y + tile_height/2)
+			);
+		case 'left':
+			return new Phaser.Curves.Line(
+				new Phaser.Math.Vector2(x + tile_width, y + tile_height/2),
+				new Phaser.Math.Vector2(x, y + tile_height/2),
+			);
+		case 'cc_left':
+			return new Phaser.Curves.QuadraticBezier(
+				new Phaser.Math.Vector2(x + tile_width/2, y + tile_height),
+				new Phaser.Math.Vector2(x + tile_width, y),
+				new Phaser.Math.Vector2(x, y + tile_height/2)
+      );
+    case 'cc_down':
+			return new Phaser.Curves.QuadraticBezier(
+				new Phaser.Math.Vector2(x + tile_width, y + tile_height/2),
+				new Phaser.Math.Vector2(x, y),
+				new Phaser.Math.Vector2(x + tile_width/2, y + tile_height)
+      );
+    case 'cc_up':
+			return new Phaser.Curves.QuadraticBezier(
+				new Phaser.Math.Vector2(x, y + tile_height/2),
+				new Phaser.Math.Vector2(x + tile_width, y + tile_height),
+				new Phaser.Math.Vector2(x + tile_width/2, y)
+      );
+    case 'cc_right':
+			return new Phaser.Curves.QuadraticBezier(
+				new Phaser.Math.Vector2(x + tile_width/2, y),
+				new Phaser.Math.Vector2(x, y + tile_height),
+				new Phaser.Math.Vector2(x + tile_width, y + tile_height/2)
+			);
+		case 'cw_right':
+			return new Phaser.Curves.QuadraticBezier(
+				new Phaser.Math.Vector2(x + tile_width/2, y + tile_height),
+				new Phaser.Math.Vector2(x, y),
+				new Phaser.Math.Vector2(x + tile_width, y + tile_height/2)
+			);
+		case 'cw_down':
+			return new Phaser.Curves.QuadraticBezier(
+				new Phaser.Math.Vector2(x, y + tile_height/2),
+				new Phaser.Math.Vector2(x + tile_width, y),
+				new Phaser.Math.Vector2(x + tile_width/2, y + tile_height)
+			);
+		case 'cw_left':
+			return new Phaser.Curves.QuadraticBezier(
+				new Phaser.Math.Vector2(x + tile_width/2, y),
+				new Phaser.Math.Vector2(x + tile_width, y + tile_height),
+				new Phaser.Math.Vector2(x, y + tile_height/2)
+      );
+    case 'cw_up':
+			return new Phaser.Curves.QuadraticBezier(
+				new Phaser.Math.Vector2(x + tile_width, y + tile_height/2),
+				new Phaser.Math.Vector2(x, y + tile_height),
+				new Phaser.Math.Vector2(x + tile_width/2, y)
+			);
+	}
+}
+
 let current_direction = 0;
 let current_connection = 'none';
 
@@ -78,9 +152,9 @@ var game = new Phaser.Game({
 	scene: {
 		preload: function() {
 			this.input.mouse.disableContextMenu();
-			this.load.atlas('atlas', 'assets/atlas.png','assets/atlas.json');
+      this.load.atlas('atlas', 'assets/atlas.png','assets/atlas.json');
+      this.load.image('ball', 'assets/ball.png');
 			generateTexture(this, 'guide', tile_width, tile_height);
-
 			this.items = this.add.group();
 			this.guides = this.add.group();
 
@@ -92,13 +166,30 @@ var game = new Phaser.Game({
 		},
 		create: function() {
 			this.selection = this.add.sprite(0, 0, 'atlas', 'up').setOrigin(0).setAlpha(0.5);
-
+      if(DEBUG) {
+        this.debug_graphic = this.add.graphics();
+        this.debug_graphic.lineStyle(1, 0xFF00FF, 1.0);
+        this.debug_graphic.setX(0).setY(0);
+        this.debug_graphic.setDepth(2);
+      }
 			this.input.keyboard.on('keyup_R', () => {
 				current_direction++;
 				current_direction %= possible_directions[current_connection].length;
 				this.selection.setFrame(possible_directions[current_connection][current_direction]);
 			});
 
+      this.input.keyboard.on('keyup_S', () => {
+        let start = test_path.curves[0].getPoint(0);
+        this.follower = this.add.follower(test_path, start.x, start.y, 'ball' );
+        let number_of_curves = test_path.curves.length;
+        this.follower.startFollow({
+          duration: number_of_curves * 1000,
+          rotateToPath: false,
+          positionOnPath: true,
+          from: 0,
+          to: 1,
+        });
+      });
 			this.input.on('pointermove', (pointer) => {
 				[x, y] = snap_to_grid(pointer.x, pointer.y);
 				this.selection.setX(x);
@@ -113,6 +204,11 @@ var game = new Phaser.Game({
 						//add the new item
 						let item = this.add.sprite(x, y, 'atlas', direction).setOrigin(0);
 						item.connection = current_connection;
+            item.path = get_curve(direction, x, y);
+            test_path.add(item.path);
+						if(DEBUG) {
+							item.path.draw(this.debug_graphic);
+						}
 						this.items.add(item);
 						//
 						//add the guides for the new item
