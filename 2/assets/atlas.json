@@ -1,7 +1,7 @@
 {
   "frames": [
     {
-      "filename": "0",
+      "filename": "up",
       "frame": {
         "x": 0,
         "y": 0,
@@ -16,7 +16,7 @@
       "trimmed": false
     },
     {
-      "filename": "1",
+      "filename": "right",
       "frame": {
         "x": 0,
         "y": 32,
@@ -31,7 +31,7 @@
       "trimmed": false
     },
     {
-      "filename": "2",
+      "filename": "down",
       "frame": {
         "x": 0,
         "y": 64,
@@ -46,7 +46,7 @@
       "trimmed": false
     },
     {
-      "filename": "3",
+      "filename": "left",
       "frame": {
         "x": 0,
         "y": 96,
@@ -61,7 +61,7 @@
       "trimmed": false
     },
     {
-      "filename": "4",
+      "filename": "cw_right",
       "frame": {
         "x": 32,
         "y": 0,
@@ -76,7 +76,7 @@
       "trimmed": false
     },
     {
-      "filename": "5",
+      "filename": "cw_down",
       "frame": {
         "x": 32,
         "y": 32,
@@ -91,7 +91,7 @@
       "trimmed": false
     },
     {
-      "filename": "6",
+      "filename": "cw_left",
       "frame": {
         "x": 32,
         "y": 64,
@@ -106,7 +106,7 @@
       "trimmed": false
     },
     {
-      "filename": "7",
+      "filename": "cw_up",
       "frame": {
         "x": 32,
         "y": 96,
@@ -121,7 +121,7 @@
       "trimmed": false
     },
     {
-      "filename": "8",
+      "filename": "cc_down",
       "frame": {
         "x": 32,
         "y": 128,
@@ -136,7 +136,7 @@
       "trimmed": false
     },
     {
-      "filename": "9",
+      "filename": "cc_left",
       "frame": {
         "x": 32,
         "y": 160,
@@ -151,7 +151,7 @@
       "trimmed": false
     },
     {
-      "filename": "10",
+      "filename": "cc_up",
       "frame": {
         "x": 32,
         "y": 192,
@@ -166,7 +166,7 @@
       "trimmed": false
     },
     {
-      "filename": "11",
+      "filename": "cc_right",
       "frame": {
         "x": 32,
         "y": 224,

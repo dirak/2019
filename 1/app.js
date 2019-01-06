@@ -88,7 +88,7 @@ var game = new Phaser.Game({
 							return {
 								filename: `${box.sprite_name}`,
 								frame: {
-									x: box.x,
+									x: box.x-menu_offset,
 									y: box.y,
 									w: tile_width,
 									h: tile_height
