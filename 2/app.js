@@ -1,7 +1,10 @@
 var tile_width = 32;
 var tile_height = 32;
 
-const DEBUG = 1;
+const DEBUG = 0;
+let ALPHA = 1;
+if(DEBUG)ALPHA = 1;
+else ALPHA = 0.01;
 
 let snap_to_grid = (x, y) => [Math.floor(x/tile_width)*tile_width, Math.floor(y/tile_height)*tile_height];
 
@@ -69,6 +72,7 @@ let guide_position = (direction, x, y) => {
 }
 
 let get_curve = (direction, x, y) => {
+	console.log(direction);
 	switch(direction) {
 		case 'up':
 			return new Phaser.Curves.Line(
@@ -91,9 +95,10 @@ let get_curve = (direction, x, y) => {
 				new Phaser.Math.Vector2(x, y + tile_height/2),
 			);
 		case 'cc_left':
-			return new Phaser.Curves.QuadraticBezier(
+			return new Phaser.Curves.CubicBezier(
 				new Phaser.Math.Vector2(x + tile_width/2, y + tile_height),
-				new Phaser.Math.Vector2(x + tile_width, y),
+				new Phaser.Math.Vector2(x + tile_width, y + tile_height/2),
+				new Phaser.Math.Vector2(x + tile_width/2, y + tile_height/2),
 				new Phaser.Math.Vector2(x, y + tile_height/2)
       );
     case 'cc_down':
@@ -215,7 +220,7 @@ var game = new Phaser.Game({
 						let forward_guide = this.add.sprite(...guide_position(direction, x, y), 'guide')
 							.setOrigin(0)
 							.setTintFill(0x45FF45)
-							.setAlpha(DEBUG);
+							.setAlpha(ALPHA);
 						forward_guide.connection = direction;
 						forward_guide.setInteractive();
 						forward_guide.on('pointerout', () => {
@@ -229,7 +234,7 @@ var game = new Phaser.Game({
 					let starts_guide = this.add.sprite(...guide_position(`starts_${direction}`, x, y), 'guide')
 						.setOrigin(0)
 						.setTintFill(0xFF4545)
-						.setAlpha(DEBUG);
+						.setAlpha(ALPHA);
 						starts_guide.connection = `starts_${direction}`;
 						starts_guide.setInteractive();
 						starts_guide.on('pointerout', () => {

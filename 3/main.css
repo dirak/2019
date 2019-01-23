@@ -1,0 +1,30 @@
+input[type="number"] {
+	width: 4em;
+}
+
+input[type="text"] {
+	width: 10em;
+}
+
+label {
+	display: inline-block;
+	width: 110px;
+	text-align:right;
+}
+
+canvas {
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  top:0;
+}
+
+#toolbar {
+	position:fixed;
+	background-color: grey
+}
+
+#sprite-menu {
+	display: none;
+}
