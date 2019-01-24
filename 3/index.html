@@ -3,6 +3,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./main.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <script src="//cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser.min.js"></script>
 </head>
 <body>
@@ -11,31 +12,110 @@
   <div id="toolbar">
     <div>
       <label for="background">Background</label>
-      <input type="text" name="background" id="background" class="canvas-bg" value="#CCC"> 
+      <input type="text" name="background" id="background" class="canvas-bg" value="#000"> 
     </div>
-    <div>
+    <div class="emitter">
       <label for="lifespan">Lifespan</label>
-      <input type="number" name="lifespan" id="lifespan" class="emitter" value="4000"> 
+      <input type="number" name="lifespan" id="lifespan" class="default" value="4000"> 
     </div>
-    <div>
+    <div class="emitter">
       <label for="x">X Position</label>
-      <input type="number" name="x" id="x" class="emitter" value="400"> 
+      <input type="number" name="x" id="x" class="default" value="600"> 
+      <i class="far fa-plus-square toggle"></i>
     </div>
-    <div>
-      <label for="Y">Y Position</label>
-      <input type="number" name="Y" id="y" class="emitter" value="400"> 
+    <div class="emitter advanced">
+      <label for="min">Min</label>
+      <input type="number" name="min" id="x_min" class="advanced" value="0"><br>
+      <label for="max">Max</label>
+      <input type="number" name="max" id="x_max" class="advanced" value="0"><br>
+      <label for="step">Steps</label>
+      <input type="number" name="steps" id="x_steps" class="advanced" value="0"> 
     </div>
-    <div>
+    <div class="emitter">
+      <label for="y">Y Position</label>
+      <input type="number" name="y" id="y" class="default" value="400"> 
+      <i class="far fa-plus-square toggle"></i>
+    </div>
+    <div class="emitter advanced">
+      <label for="min">Min</label>
+      <input type="number" name="min" id="y_min" class="advanced" value="0"><br>
+      <label for="max">Max</label>
+      <input type="number" name="max" id="y_max" class="advanced" value="0"><br>
+      <label for="step">Steps</label>
+      <input type="number" name="steps" id="y_steps" class="advanced" value="0"> 
+    </div>
+    <div class="emitter">
+      <label for="alpha">Alpha</label>
+      <input type="number" name="alpha" id="alpha" class="default" value="1"> 
+      <i class="far fa-plus-square toggle"></i>
+    </div>
+    <div class="emitter advanced">
+      <label for="start">Start</label>
+      <input type="number" name="start" id="alpha_start" class="advanced" value="0"><br>
+      <label for="end">End</label>
+      <input type="number" name="end" id="alpha_end" class="advanced" value="0"><br>
+      <label for="ease">Ease</label>
+      <select class="default" name="ease" id="ease">
+        <option value="Quartic.easeOut">Quartic</option>
+        <option value="Quintic.easeOut">Quintic</option>
+        <option value="Sine.easeOut">Sine</option>
+      </select>
+    </div>
+    <div class="emitter">
       <label for="blendmode">Blend Mode</label>
-      <select class="emitter" name="blendMode" id="blendmode">
+      <select class="default" name="blendMode" id="blendmode">
         <option value="ADD">Add</option>
         <option value="NORMAL">Normal</option>
         <option value="MULTIPLY">Multiply</option>
+        <option value="SCREEN">Screen</option>
       </select>
     </div>
-    <div>
-      <label for="gravityY">Y Gravity</label>
-      <input type="number" name="gravityY" id="gravityY" class="emitter" value="400"> 
+    <div class="emitter">
+      <label for="angle">Angle</label>
+      <input type="number" name="angle" id="angle" class="default" value="0">
+      <i class="far fa-plus-square toggle"></i>
+    </div>
+    <div class="emitter advanced">
+      <label for="min">Min</label>
+      <input type="number" name="min" id="angle_min" class="advanced" value="0"><br>
+      <label for="max">Max</label>
+      <input type="number" name="max" id="angle_max" class="advanced" value="0"> 
+    </div>
+    <div class="emitter">
+      <label for="speed">Speed</label>
+      <input type="number" name="speed" id="speed" class="default" value="0">
+      <i class="far fa-plus-square toggle"></i>
+    </div>
+    <div class="emitter advanced">
+      <label for="min">Min</label>
+      <input type="number" name="min" id="speed_min" class="advanced" value="0"><br>
+      <label for="max">Max</label>
+      <input type="number" name="max" id="speed_max" class="advanced" value="0"> 
+    </div>
+    <div class="emitter">
+      <label for="scale">Scale</label>
+      <input type="number" name="scale" id="scale" class="default" value="1">
+      <i class="far fa-plus-square toggle"></i>
+    </div>
+    <div class="emitter advanced">
+      <label for="start">Start</label>
+      <input type="number" name="start" id="scale_start" class="advanced" value="0"><br>
+      <label for="end">End</label>
+      <input type="number" name="end" id="scale_end" class="advanced" value="0"> 
+    </div>
+    <div class="emitter">
+      <label for="bounds">Bounds</label>
+      <i class="far fa-plus-square toggle"></i>
+    </div>
+    <div class="emitter advanced">
+      <label for="x">X</label>
+      <input type="number" name="x" id="bounds_x" class="advanced" value="0"><br>
+      <label for="y">Y</label>
+      <input type="number" name="y" id="bounds_y" class="advanced" value="0"><br>
+      <label for="w">Width</label>
+      <input type="number" name="w" id="bounds_w" class="advanced" value="0"><br>
+      <label for="h">Height</label>
+      <input type="number" name="h" id="bounds_h" class="advanced" value="0"><br>
     </div>
   </div>
   <script src="./../helper/download.js"></script>

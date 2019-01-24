@@ -10,32 +10,67 @@ class EmitterScene extends Phaser.Scene {
 	constructor() {
 		super({key: "Emitter"})
 	}
+	/*
+			collideTop: false,
+			collideBottom: false,
+	*/
 	preload() {
 		this.load.atlas('flares', 'assets/particles/flares.png', 'assets/particles/flares.json')
 		this.emitter_json = {
 			frame: [ 'red', 'green' ],
-			x: 400,
-			y: 400,
-			lifespan: 4000,
-			angle: { min: 225, max: 315 },
-			speed: { min: 300, max: 500 },
-			scale: { start: 0.6, end: 0 },
-			gravityY: 300,
-			bounce: 0.9,
-			bounds: { x: 250, y: 0, w: 350, h: 0 },
-			collideTop: false,
-			collideBottom: false,
-			blendMode: 'ADD'
+			x: 600,
+			y: 400
 		}
-		document.querySelectorAll('.emitter').forEach(node => {
+		document.querySelectorAll('.emitter > .default').forEach(node => {
 			node.addEventListener('change', () => {
 				let value = node.value
-				console.log('type',node.type)
-				console.log('value', node.value)
-				console.log('name', node)
-				if(node.type === 'number') value = parseInt(value)
+				if(value === '') {
+					delete this.emitter_json[node.name]
+					this.makeEmitter()
+					return
+				}
+				if(node.type === 'number') value = parseFloat(value)
 				this.emitter_json[node.name] = value
 				this.makeEmitter()
+			})
+		})
+		document.querySelectorAll('.emitter > .advanced').forEach(node => {
+			node.addEventListener('change', () => {
+				let value = node.value
+				if(value === '') {
+					delete this.emitter_json[node.id.split('_')[0]]
+					this.makeEmitter()
+					return
+				}
+				if(node.type === 'number') value = parseFloat(value)
+				if(typeof this.emitter_json[node.id.split('_')[0]] !== "object") {
+					this.emitter_json[node.id.split('_')[0]] = [...node.parentNode.querySelectorAll('.advanced')]
+					.reduce((acc, node) => {
+						let value = node.value
+						if(node.type === 'number') value = parseFloat(value)
+						acc[node.name] = value
+						return acc
+					}, {})
+				} else {
+					this.emitter_json[node.id.split('_')[0]][node.name] = value
+				}
+				this.makeEmitter()
+			})
+		})
+		document.querySelectorAll('.toggle').forEach(node => {
+			let toggleEl = node.parentNode.nextElementSibling
+			toggleEl.style.display = "none"
+			node.addEventListener('click', () => {
+				if(toggleEl.style.display === "none") {
+					toggleEl.style.display = "block"
+					node.classList.toggle('fa-plus-square')
+					node.classList.toggle('fa-minus-square')
+				}
+				else {
+					toggleEl.style.display = "none"
+					node.classList.toggle('fa-minus-square')
+					node.classList.toggle('fa-plus-square')
+				}
 			})
 		})
 		document.querySelector('.canvas-bg').addEventListener('change', () => {
@@ -53,6 +88,7 @@ class EmitterScene extends Phaser.Scene {
 	}
 
 	makeEmitter() {
+		console.log(this.emitter_json)
 		if(this.particles) this.particles.destroy()
 		this.particles = this.add.particles('flares')
 		this.particles.createEmitter(this.emitter_json)
@@ -63,6 +99,6 @@ var game = new Phaser.Game({
 	...CONFIG,
 	width: window.innerWidth,
 	height: window.innerHeight,
-	backgroundColor: '#CCC',
+	backgroundColor: '#000',
 	scene: [EmitterScene]
 });
